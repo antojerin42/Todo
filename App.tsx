@@ -4,10 +4,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import HomeScreen from './src/screen/HomeScreen';
-import HeaderComponent from './src/component/headerComponent';
 import ToDoDetail from './src/screen/ToDoDetail';
+import { RootStackParamList } from './type';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
@@ -19,7 +19,7 @@ export default function App() {
           name="HomeScreen"
           component={HomeScreen}
           options={{
-            title: 'ToDo List',
+            title: 'ToDo App',
           }}
         />
         <Stack.Screen
@@ -36,7 +36,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'yellow'
-
   }
 });
