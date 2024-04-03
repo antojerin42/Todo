@@ -1,9 +1,14 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 
-import { HIGH_PRIORITY, MEDIUM_PRIORITY } from '../utils/constants';
+import { HIGH_PRIORITY, MEDIUM_PRIORITY, UPDATE_TODO } from '../utils/constants';
 
-export default function ToDoItem({onPress, data}) {
+export default function ToDoItem({ data, navigation, id }) {
+
+  const editToDo = () => {
+    navigation.push('ToDoDetail', {btnName: UPDATE_TODO, title: 'Edit', data, id});
+  }
+
   const getPriorityColor = (priority: string) => {
     let color;
     switch(priority) {
@@ -16,7 +21,7 @@ export default function ToDoItem({onPress, data}) {
       }
       break;
       default: {
-        color='green'
+        color='blue'
       }
       break;
     }
@@ -24,7 +29,7 @@ export default function ToDoItem({onPress, data}) {
   }
 
   return (
-    <TouchableOpacity onPress={() => onPress()} style={styles.container}>
+    <TouchableOpacity onPress={() => editToDo()} style={styles.container}>
       <View style={styles.headerContainer}>
       <Text style={styles.titleStyle}>{data.todoTitle}</Text>
       <Entypo name="controller-record" size={18} color={getPriorityColor(data.priority)} style={styles.icon} />
