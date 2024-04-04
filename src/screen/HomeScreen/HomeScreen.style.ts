@@ -13,6 +13,13 @@ const styles = StyleSheet.create({
       right: '5%',
       bottom: '5%',
   
+    },    
+    defaultContainer: {
+      padding: 20,
+      left: '15%',
+      borderRadius: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
 

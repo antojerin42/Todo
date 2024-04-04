@@ -47,6 +47,10 @@ const styles = StyleSheet.create({
     priorityContainer: {
       borderColor: 'a3a3a3',
       borderWidth: 1,
+    },
+    trashContainer: {
+      top: '90%',
+      left: '80%'
     }
   });
 

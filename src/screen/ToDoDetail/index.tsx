@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
 import { Formik, ErrorMessage } from 'formik';
@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { CREATE_TODO, MEDIUM_PRIORITY, PRIORITY_LIST } from '../../utils/constants';
 import styles from './ToDoDetail.style';
 import { ToDoDetailProps } from './ToDoDetail.interface';
+import { Icon } from 'react-native-elements';
 
 const validationSchema = yup.object().shape({
   todoTitle: yup.string().required('Titile is required'),
@@ -38,6 +39,31 @@ const ToDoDetail: React.FC<ToDoDetailProps> = (props) => {
     navigation.push('HomeScreen');
   }
 
+  const deleteToDo = async () => {
+    Alert.alert(
+      'Confirm Deletion',
+      'Are you sure you want to delete this ToDo?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: async () => {
+            const todoList = await getData();
+            todoList.splice(id, 1);
+            const jsonValue = JSON.stringify(todoList);
+            await AsyncStorage.setItem('ToDoList', jsonValue);
+            navigation.push('HomeScreen');
+          },
+          style: 'destructive',
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   const addToDo = async (values: object) => {
     // await AsyncStorage.clear()
     const todoList = await getData();
@@ -66,7 +92,13 @@ const ToDoDetail: React.FC<ToDoDetailProps> = (props) => {
   }
 
   return (
+
     <View style={styles.container}>
+    {route.params.btnName !== CREATE_TODO && (
+      <TouchableOpacity style = {styles.trashContainer}>
+        <Icon onPress={deleteToDo} reverse name='trash' type='font-awesome' color={'#00D7C2'} />
+      </TouchableOpacity>
+    )}
         <Formik
      initialValues={{ todoTitle: data?.todoTitle || '', description: data?.description || '', priority: selectedPriority }}
      onSubmit={values => onSubmit(values)}

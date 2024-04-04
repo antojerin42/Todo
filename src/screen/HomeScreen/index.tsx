@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { View } from 'react-native';
 import { Icon } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Text } from 'react-native';
 
 import ToDoItem from '../../component/todoComponent';
 import styles from './HomeScreen.style';
@@ -18,7 +19,6 @@ const HomeScreen: React.FC<HomeScreenProps> = (props) => {
       const jsonValue = await AsyncStorage.getItem('ToDoList');
       return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
-      // error reading value
     }
   };
 
@@ -39,9 +39,20 @@ const HomeScreen: React.FC<HomeScreenProps> = (props) => {
     navigation.push('ToDoDetail', {btnName: CREATE_TODO, title: 'Create', data: {}, id:''});
   }
 
+  const DisplayDefaultText = () => {
+    if (!tasks || tasks.length === 0) {
+      return (
+        <View style={styles.defaultContainer}>
+          <Text>No Data available</Text>
+        </View>
+      );
+    }
+    return null;
+  };
 
   return (
     <View style={styles.container}>
+    <DisplayDefaultText />
       {tasks.map((item, index) => {
         return (
           <ToDoItem key={index} navigation={navigation} data={item} id={index}/>
